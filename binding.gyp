@@ -4,7 +4,7 @@
       "target_name": "Cam",
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
-      "sources": [ "./src/putText.cc","./src/addon.cc", "./src/Cam.cc"],
+      "sources": ["./src/addon.cc", "./src/Cam.cc"],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
         "C:\\Modules\\OPENCV\\opencv\\build\\include"

@@ -2,12 +2,13 @@ const { app, BrowserWindow, Menu } = require('electron')
 const addon = require('./addon/Cam.node')
 const log = require('electron-log');
 const camera = new addon.Cam();
-const child_process = require('child_process');
 
 var CamId = -1;
 var Debug = false;
 var DotNet = false;
 var is_running = false;
+var is_displaying = false;
+var win;
 
 function camera_set(x) {
   log.info("Camera Switched to " + x);
@@ -27,6 +28,10 @@ function camera_start(){
   }
   log.info("Start fetching Image from Camera " + CamId + ", Mode = " + Debug + " + " + DotNet);
   is_running = true;
+  if (!is_displaying) {
+    win.loadFile('standard.html');
+    is_displaying = true;
+  }
   camera.UpdateImage(Debug, DotNet);
 }
 
@@ -40,7 +45,7 @@ function camera_restart() {
 
 function createWindow () {
   // 创建浏览器窗口
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -87,8 +92,10 @@ function createWindow () {
         label: "显示标准",
         click: function() {
           log.info("standard page has been loaded.");
-          camera_stop();
-          win.loadFile('standard.html');
+          if (!is_displaying) {
+            win.loadFile('standard.html');
+            is_displaying = true;
+          }
         }
       }
     );
